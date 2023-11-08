@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Recommendation System</title>
+</head>
+<body>
+    <h1>Movie Recommendation System</h1>
+    <p>Select a movie category and rate 5 movies to get recommendations:</p>
+    
+    <form id="movie-form">
+        <label for="category">Select a category:</label>
+        <select id="category" name="category">
+            <option value="action">Action</option>
+            <option value="drama">Drama</option>
+            <option value="comedy">Comedy</option>
+            <!-- Add more category options as needed -->
+        </select>
+        
+        <h2>Rate 5 Movies in the Selected Category:</h2>
+        
+        <!-- Movie 1 -->
+        <label for="movie1">Movie 1:</label>
+        <input type="text" id="movie1" name="movie1" placeholder="Movie Name">
+        <input type="number" id="rating1" name="rating1" placeholder="Rating (1-5)">
+        
+        <!-- Movie 2 -->
+        <label for="movie2">Movie 2:</label>
+        <input type="text" id="movie2" name="movie2" placeholder="Movie Name">
+        <input type="number" id="rating2" name="rating2" placeholder="Rating (1-5)">
+        
+        <!-- Movie 3 -->
+        <label for="movie3">Movie 3:</label>
+        <input type="text" id="movie3" name="movie3" placeholder="Movie Name">
+        <input type="number" id="rating3" name="rating3" placeholder="Rating (1-5)">
+        
+        <!-- Movie 4 -->
+        <label for="movie4">Movie 4:</label>
+        <input type="text" id="movie4" name="movie4" placeholder="Movie Name">
+        <input type="number" id="rating4" name="rating4" placeholder="Rating (1-5)">
+        
+        <!-- Movie 5 -->
+        <label for="movie5">Movie 5:</label>
+        <input type="text" id="movie5" name="movie5" placeholder="Movie Name">
+        <input type="number" id="rating5" name="rating5" placeholder="Rating (1-5)">
+        
+        <button type="button" onclick="getRecommendations()">Get Recommendations</button>
+    </form>
+    
+    <h2>Recommended Movies:</h2>
+    <ul id="recommendations">
+        <!-- Recommended movies will be displayed here using JavaScript -->
+    </ul>
+
+    <script>
+        function getRecommendations() {
+            // JavaScript function to send user input to Flask server and receive recommendations
+            // You'll need to implement this part using Flask routes and Python code.
+        }
+    </script>
+</body>
+</html>
