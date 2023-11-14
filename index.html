@@ -3,6 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Movie Recommendation System</title>
+    <style>
+        .rating-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .rating-container input {
+            margin-right: 5px;
+        }
+    </style>
 </head>
 <body>
     <h1>Movie Recommendation System</h1>
@@ -19,30 +29,50 @@
         
         <h2>Rate 5 Movies in the Selected Category:</h2>
         
-        <!-- Movie 1 -->
-        <label for="movie1">Movie 1:</label>
-        <input type="text" id="movie1" name="movie1" placeholder="Movie Name">
-        <input type="number" id="rating1" name="rating1" placeholder="Rating (1-5)">
-        
-        <!-- Movie 2 -->
-        <label for="movie2">Movie 2:</label>
-        <input type="text" id="movie2" name="movie2" placeholder="Movie Name">
-        <input type="number" id="rating2" name="rating2" placeholder="Rating (1-5)">
-        
-        <!-- Movie 3 -->
-        <label for="movie3">Movie 3:</label>
-        <input type="text" id="movie3" name="movie3" placeholder="Movie Name">
-        <input type="number" id="rating3" name="rating3" placeholder="Rating (1-5)">
-        
-        <!-- Movie 4 -->
-        <label for="movie4">Movie 4:</label>
-        <input type="text" id="movie4" name="movie4" placeholder="Movie Name">
-        <input type="number" id="rating4" name="rating4" placeholder="Rating (1-5)">
-        
-        <!-- Movie 5 -->
-        <label for="movie5">Movie 5:</label>
-        <input type="text" id="movie5" name="movie5" placeholder="Movie Name">
-        <input type="number" id="rating5" name="rating5" placeholder="Rating (1-5)">
+        <!-- Dynamically generate movie options and ratings -->
+        <script>
+            // Sample movie data (replace with actual data)
+            const movieData = [
+                { title: 'Movie 1', rating: 0 },
+                { title: 'Movie 2', rating: 0 },
+                { title: 'Movie 3', rating: 0 },
+                { title: 'Movie 4', rating: 0 },
+                { title: 'Movie 5', rating: 0 },
+            ];
+
+            // Function to dynamically generate movie options and ratings
+            function generateMovieInputs() {
+                const form = document.getElementById('movie-form');
+                
+                movieData.forEach((movie, index) => {
+                    const label = document.createElement('label');
+                    label.setAttribute('for', `movie${index + 1}`);
+                    label.textContent = `${movie.title}:`;
+
+                    const ratingContainer = document.createElement('div');
+                    ratingContainer.classList.add('rating-container');
+
+                    for (let i = 1; i <= 5; i++) {
+                        const radioInput = document.createElement('input');
+                        radioInput.setAttribute('type', 'radio');
+                        radioInput.setAttribute('id', `rating${index + 1}-${i}`);
+                        radioInput.setAttribute('name', `rating${index + 1}`);
+                        radioInput.setAttribute('value', i);
+                        
+                        const labelForRadio = document.createElement('label');
+                        labelForRadio.textContent = i;
+
+                        ratingContainer.appendChild(radioInput);
+                        ratingContainer.appendChild(labelForRadio);
+                    }
+
+                    form.appendChild(label);
+                    form.appendChild(ratingContainer);
+                });
+            }
+
+            generateMovieInputs();  // Call the function to generate movie options and ratings
+        </script>
         
         <button type="button" onclick="getRecommendations()">Get Recommendations</button>
     </form>
