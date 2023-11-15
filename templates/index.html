@@ -1,0 +1,192 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Recommendation System</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.4/jquery.rateyo.min.js"></script>
+    
+    <style>
+        .rating-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .rating-container input {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Movie Recommendation System</h1>
+    
+    <p>Select a movie category and rate 5 movies to get recommendations:</p>
+    <script>
+    function generateCategories() {
+        const select = d3.select("#category");
+    
+        // Sample categories
+        const categories = [
+            "Action", "Adventure", "Animation", "Children's", "Comedy",
+            "Crime", "Documentary", "Drama", "Fantasy", "Film-Noir",
+            "Horror", "Musical", "Mystery", "Romance", "Sci-Fi",
+            "Thriller", "War", "Western"
+        ];
+    
+        select.selectAll("option")
+            .data(categories)
+            .enter()
+            .append("option")
+            .attr("value", category => category)
+            .text(category => category);
+    }
+    </script>
+    
+    <form id="movie-form">
+        <label for="category">Select a category:</label>
+        <select id="category" name="category">     </select>        
+             Categories will be dynamically added using D3.js -->
+       
+        <!-- <select id="category" onchange="optionChanged(this.value)"></select> -->
+        
+        <!-- <h2>Rate 5 Movies in the Selected Category:</h2>
+        
+        Movie options and ratings will be dynamically added using D3.js -->
+        <!-- <div id="movie-inputs"></div> -->
+        
+        <!-- <button type="button" onclick="getRecommendations()">Get Recommendations</button>
+    </form> -->
+    
+    <!-- <h2>Recommended Movies:</h2>
+    <ul id="recommendations"> -->
+        <!-- Recommended movies will be displayed here using JavaScript -->
+    <!-- </ul>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
+    <!-- <script src="./static/js/app.js"></script> -->
+    <!-- <script src="{{ url_for('static', filename='js/app.js') }}"></script> -->
+    <!-- <script src=".\app.js"></script>
+
+</body>
+</html>  --> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommender</title>
+</head>
+<body>
+    <h1>Movie Recommender</h1>
+
+    <form id="genreForm">
+        <label for="genre">Select a Genre:</label>
+        <select id="genre" name="genre">
+            <option value="action">Action</option>
+            <option value="comedy">Comedy</option>
+            <!-- Add more genres as needed -->
+        </select>
+        <button type="button" onclick="getMovies()">Submit</button>
+    </form>
+
+    <div id="moviesContainer" style="display: none;">
+        <h2>Rate the following movies:</h2>
+        <div id="movieList"></div>
+
+        <h2>Movie Recommendations:</h2>
+        <div id="recommendations"></div>
+    </div>
+
+    <script>
+        function getMovies() {
+            var genre = document.getElementById('genre').value;
+
+            // Send AJAX request to Flask app to get movies based on selected genre
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/get_movies', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function () {
+                var response = JSON.parse(xhr.responseText);
+                if (response.movies) {
+                    displayMovies(response.movies);
+                } else {
+                    alert('Error fetching movies. Please try again.');
+                }
+            };
+            xhr.send('genre=' + genre);
+        }
+
+        function displayMovies(movies) {
+            var movieListContainer = document.getElementById('movieList');
+            movieListContainer.innerHTML = '';
+
+            for (var i = 0; i < movies.length; i++) {
+                var movieDiv = document.createElement('div');
+                movieDiv.innerHTML = movies[i] + ' <input type="number" min="1" max="5" name="ratings[]" required> ';
+                movieListContainer.appendChild(movieDiv);
+            }
+
+            document.getElementById('moviesContainer').style.display = 'block';
+        }
+
+        function submitRatings() {
+            var ratings = document.getElementsByName('ratings[]');
+            var validRatings = true;
+
+            for (var i = 0; i < ratings.length; i++) {
+                if (ratings[i].value === '') {
+                    validRatings = false;
+                    break;
+                }
+            }
+
+            if (validRatings) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/rate_movies', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function () {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.message) {
+                        alert(response.message);
+                        getRecommendations();
+                    } else {
+                        alert('Error submitting ratings. Please try again.');
+                    }
+                };
+
+                var formData = new FormData(document.getElementById('genreForm'));
+                xhr.send(formData);
+            } else {
+                alert('Please rate all movies before submitting.');
+            }
+        }
+
+        function getRecommendations() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/recommend_movies', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function () {
+                var response = JSON.parse(xhr.responseText);
+                if (response.recommendations) {
+                    displayRecommendations(response.recommendations);
+                } else {
+                    alert('Error fetching recommendations. Please try again.');
+                }
+            };
+            xhr.send();
+        }
+
+        function displayRecommendations(recommendations) {
+            var recommendationsContainer = document.getElementById('recommendations');
+            recommendationsContainer.innerHTML = '';
+
+            for (var i = 0; i < recommendations.length; i++) {
+                var recommendationDiv = document.createElement('div');
+                recommendationDiv.innerHTML = recommendations[i];
+                recommendationsContainer.appendChild(recommendationDiv);
+            }
+        }
+    </script>
+</body>
+</html>
