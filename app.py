@@ -129,11 +129,8 @@ db_path = 'sqlite:///movieRatings.db'
 engine = create_engine(db_path)
 
 # Use automap_base to create a base with automapping capabilities
-#Base = automap_base()
-#Base.prepare(engine, reflect=True)
-
-
-Base = declarative_base()
+Base = automap_base()
+Base.prepare(engine, reflect=True)
 
 
 # # Manually exclude 'result' table
@@ -142,7 +139,7 @@ Base = declarative_base()
 
 # Print out the mapped classes
 print('your keys:')
-# print(Base.classes.keys())
+print(Base.classes.keys())
 
 
 # TopMovies = Base.classes.top_movies
@@ -172,13 +169,16 @@ class Links(Base):
 session = Session(engine)
 
 # TopMovies = Base.classes.links
+Movies = Base.classes.result
 
 # Print classes and tables for debugging
-# print("Classes in Base:", Base.classes.keys())
+print("Classes in Base:", Base.classes.keys())
 print("Tables in metadata:", Base.metadata.tables.keys())
 
 column_names = [column.name for column in TopMovies.__table__.columns]
 print("Column names in TopMovies class:", column_names)
+
+print("columns in result: ", Movies.keys())
 
 # action =  session.query(TopMovies).first()
 # print("first column in top movies:", action)
