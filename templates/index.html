@@ -81,15 +81,19 @@
     <h1>Movie Recommender</h1>
 
     <form id="genreForm">
-        <label for="genre">Select a Genre:</label>
-        <select id="genre" name="genre">
-            <option value="action">Action</option>
-            <option value="comedy">Comedy</option>
-            <!-- Add more genres as needed -->
-        </select>
-        <button type="button" onclick="getMovies()">Submit</button>
+        <h2>Select a Movie Genre</h2>
+        <form>
+            <label for="genres">Choose a genre:</label>
+            <select id="genres" name="genres">
+                <option value="" disabled selected>Select</option>
+                {% for column_names in column_names %}
+                    <option value="{{ genre }}">{{ column_names }}</option>
+                {% endfor %}
+            </select>
+            <button type="button" onclick="getMovies()">Submit</button>
+            <!-- <input type="submit" value="Submit"> -->
     </form>
-
+        
     <div id="moviesContainer" style="display: none;">
         <h2>Rate the following movies:</h2>
         <div id="movieList"></div>
